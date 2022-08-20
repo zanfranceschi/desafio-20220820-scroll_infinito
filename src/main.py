@@ -24,7 +24,7 @@ async def get(items: int = 10):
 
 
 @app.get("/")
-async def example(request: Request):
+async def desafio(request: Request):
     return templates.TemplateResponse("desafio.html", {"request" : request})
 
 
