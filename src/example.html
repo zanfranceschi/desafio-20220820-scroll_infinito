@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Desafio de Rolagem Infinita</title>
+    <style>
+        #items {
+            margin: 10px 30% 10px 30%;
+        }
+        .item {
+            border: 1px solid #ccc;
+            margin: 10px;
+            padding: 10px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .item img {
+            margin-right: 10px;
+        }
+
+        #loading {
+            color: #fff;
+            position: fixed;
+            display: block;
+            width: 100%;
+            padding: 10px;
+            bottom: 0;
+            left: 0;
+            text-align: center;
+            opacity: 0.9;
+            background-color: #333;
+            z-index: 99;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Vai rolando aí até cansar!</h1>
+    </main>
+    <div id="loading">carregando...</div>
+    <div id="items">
+
+    </div>
+    <script type="text/javascript">
+        /*
+            Quer xitar olhando o código fonte, né?! rsrs
+            Manda bala!
+        */
+        let isLoading = false;
+        const items = document.querySelector("#items");
+        const loading = document.querySelector("#loading");
+
+        const getItems = () => {
+            isLoading = true;
+            loading.style.display = "block";
+
+            fetch('/api?items=10')
+                .then((response) => response.json())
+                .then((data) => {
+                    data.forEach(item => {
+                        const itemDiv = document.createElement("div");
+                        itemDiv.setAttribute("class", "item");
+                        itemDiv.className = "item";
+
+                        if (item.image != null) {
+                            const itemImg = document.createElement("img");
+                            itemImg.src = item.image;
+                            itemDiv.appendChild(itemImg);
+                        }
+
+                        const itemText = document.createElement("span");
+                        const text = document.createTextNode(item.text);
+                        itemText.appendChild(text);
+                        itemDiv.appendChild(itemText);
+
+                        items.appendChild(itemDiv);
+                    });
+
+                    isLoading = false;
+                    loading.style.display = "none";
+                });
+        };
+
+        // roubado/adaptado de https://stackoverflow.com/questions/70379478/how-to-detect-if-browser-window-is-near-the-bottom
+        const triggerGetItems = () => {
+            const margin = 200;
+            
+            if (
+                window.innerHeight +
+                Math.max(
+                    window.pageYOffset,
+                    document.documentElement.scrollTop,
+                    document.body.scrollTop
+                ) >
+                document.documentElement.offsetHeight - margin
+                && isLoading == false
+            ) {
+                getItems();
+            } else {
+                return;
+            }
+        };
+
+        window.onscroll = () => {
+            triggerGetItems();
+        };
+
+        window.onload = () => {
+            getItems();
+        }
+    </script>
+</body>
+
+</html>
