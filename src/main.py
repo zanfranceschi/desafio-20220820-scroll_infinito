@@ -19,7 +19,7 @@ app.add_middleware(
 )
 
 @app.get("/api")
-async def get(items: int = 10):
+async def api(items: int = 10):
     return content.generate(items)
 
 
