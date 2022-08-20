@@ -10,6 +10,6 @@ Depois que o container estiver iniciado, acesse http://127.0.0.1:8000/. Você en
 Have fun!
 
 
-# Links para Solulção da Comunidade
+# Links para Soluções da Comunidade
 
 Seja a primeira pessoa a incluir um link aqui através de um pull request <3
